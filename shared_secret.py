@@ -11,17 +11,20 @@ class User():
         self.name = name
         self.__private = random.randint(0, self.clock_size)
         self._ppn = (self.base ** self.__private) % self.clock_size
-        self.__shared = None
+        self.__shared = []
     
     def gen_shared_secret(self, other):
-        self.__shared = ":0<3d".format((other._ppn ** self.__private) % self.clock_size)
-        other.__shared = ":0<3d".format((self._ppn ** other.__private) % other.clock_size)
+        self.__shared.append(":0<3d".format((other._ppn ** self.__private) % self.clock_size))
+        other.__shared.append(":0<3d".format((self._ppn ** other.__private) % other.clock_size))
         
     
     
 def main():
     me = User('me')
     other = User('arnold')
-    me.gen_shared_secret(other)
+    #when the user sends a message
+    me.__shared = []
+    for i in range(message//4):
+        me.gen_shared_secret(other)
     
 main()
